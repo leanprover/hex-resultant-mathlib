@@ -14,7 +14,7 @@ rev = "6e7f884c7ee352c7682baad90d0d0b312cdadd21"
 [[require]]
 name = "HexPolyMathlib"
 git = "https://github.com/leanprover/hex-poly-mathlib.git"
-rev = "bc2b5505b543d9f0e6ef641901dab6c1bd97bf21"
+rev = "e17fbabc5d782679c3c55838ff2ed0e15db88631"
 
 [[require]]
 name = "mathlib"
