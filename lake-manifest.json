@@ -31,10 +31,10 @@
       "type": "git",
       "subDir": null,
       "scope": "",
-      "rev": "2252d1a8cd8b9fd22e930492d948b8a8e6c55d8a",
+      "rev": "73847eaaf06e829a7bad6bff02cd95b1e75f8707",
       "name": "HexResultant",
       "manifestFile": "lake-manifest.json",
-      "inputRev": "2252d1a8cd8b9fd22e930492d948b8a8e6c55d8a",
+      "inputRev": "73847eaaf06e829a7bad6bff02cd95b1e75f8707",
       "inherited": false,
       "configFile": "lakefile.toml"
     },
@@ -139,10 +139,10 @@
       "type": "git",
       "subDir": null,
       "scope": "",
-      "rev": "0ec35366ca67d3f4d1189cc4c9714805c5c437ec",
+      "rev": "da8a864cd17ccca780d8c76af403e88585bc4734",
       "name": "HexBasic",
       "manifestFile": "lake-manifest.json",
-      "inputRev": "0ec35366ca67d3f4d1189cc4c9714805c5c437ec",
+      "inputRev": "da8a864cd17ccca780d8c76af403e88585bc4734",
       "inherited": true,
       "configFile": "lakefile.toml"
     },
@@ -155,6 +155,30 @@
       "name": "Cli",
       "manifestFile": "lake-manifest.json",
       "inputRev": "v4.34.0-rc2",
+      "inherited": true,
+      "configFile": "lakefile.toml"
+    },
+    {
+      "url": "https://github.com/leanprover/hex-matrix.git",
+      "type": "git",
+      "subDir": null,
+      "scope": "",
+      "rev": "25cfbbd8a689eb782fad408c46a9c1796dd943b2",
+      "name": "HexMatrix",
+      "manifestFile": "lake-manifest.json",
+      "inputRev": "25cfbbd8a689eb782fad408c46a9c1796dd943b2",
+      "inherited": true,
+      "configFile": "lakefile.toml"
+    },
+    {
+      "url": "https://github.com/leanprover/hex-determinant.git",
+      "type": "git",
+      "subDir": null,
+      "scope": "",
+      "rev": "01c471058f6d7b84c4bc37a2d200f264f356328b",
+      "name": "HexDeterminant",
+      "manifestFile": "lake-manifest.json",
+      "inputRev": "01c471058f6d7b84c4bc37a2d200f264f356328b",
       "inherited": true,
       "configFile": "lakefile.toml"
     }
