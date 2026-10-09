@@ -9,12 +9,12 @@ leanOptions = [
 [[require]]
 name = "HexPolyMathlib"
 git = "https://github.com/leanprover/hex-poly-mathlib.git"
-rev = "v0.8.0"
+rev = "v0.9.0"
 
 [[require]]
 name = "HexResultant"
 git = "https://github.com/leanprover/hex-resultant.git"
-rev = "v0.8.0"
+rev = "v0.9.0"
 
 [[require]]
 name = "mathlib"
