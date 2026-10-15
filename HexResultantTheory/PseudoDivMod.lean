@@ -6,7 +6,7 @@ Authors: Kim Morrison
 
 module
 
-public import HexResultantMathlib.Basic
+public import HexResultantTheory.Basic
 
 public section
 
@@ -30,24 +30,24 @@ theorem reconstruct [CommRing R] [DecidableEq R]
     let q := (pseudoDivMod f g).1
     let r := (pseudoDivMod f g).2
     Polynomial.C (g.leadingCoeff ^ (f.size - g.size + 1)) *
-        HexPolyMathlib.toPolynomial f =
-      HexPolyMathlib.toPolynomial q * HexPolyMathlib.toPolynomial g +
-        HexPolyMathlib.toPolynomial r := by
-  have h := congrArg HexPolyMathlib.toPolynomial
+        HexPolyTheory.toPolynomial f =
+      HexPolyTheory.toPolynomial q * HexPolyTheory.toPolynomial g +
+        HexPolyTheory.toPolynomial r := by
+  have h := congrArg HexPolyTheory.toPolynomial
     (pseudoDivMod_reconstruct f g hg hgf)
-  simpa only [HexPolyMathlib.toPolynomial_scale,
-    HexPolyMathlib.toPolynomial_mul, HexPolyMathlib.toPolynomial_add] using h
+  simpa only [HexPolyTheory.toPolynomial_scale,
+    HexPolyTheory.toPolynomial_mul, HexPolyTheory.toPolynomial_add] using h
 
 /-- A pseudo-quotient fits in the formal-degree gap required by Mathlib's
 resultant row-operation theorem. -/
 theorem quotient_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
-    (HexPolyMathlib.toPolynomial (pseudoDivMod f g).1).natDegree +
-        (HexPolyMathlib.toPolynomial g).natDegree ≤
-      (HexPolyMathlib.toPolynomial f).natDegree := by
-  rw [HexPolyMathlib.natDegree_toPolynomial,
-    HexPolyMathlib.natDegree_toPolynomial,
-    HexPolyMathlib.natDegree_toPolynomial]
+    (HexPolyTheory.toPolynomial (pseudoDivMod f g).1).natDegree +
+        (HexPolyTheory.toPolynomial g).natDegree ≤
+      (HexPolyTheory.toPolynomial f).natDegree := by
+  rw [HexPolyTheory.natDegree_toPolynomial,
+    HexPolyTheory.natDegree_toPolynomial,
+    HexPolyTheory.natDegree_toPolynomial]
   have hq := pseudoDivMod_quotient_size_le f g
   have hgpos : 0 < g.size := by
     exact Nat.pos_of_ne_zero fun hg0 =>
@@ -79,9 +79,9 @@ the nonzero divisor. The disjunction records Mathlib's default degree `0` for
 the zero polynomial, including the constant-divisor case. -/
 theorem remainder_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) :
-    HexPolyMathlib.toPolynomial (pseudoDivMod f g).2 = 0 ∨
-      (HexPolyMathlib.toPolynomial (pseudoDivMod f g).2).natDegree <
-        (HexPolyMathlib.toPolynomial g).natDegree := by
+    HexPolyTheory.toPolynomial (pseudoDivMod f g).2 = 0 ∨
+      (HexPolyTheory.toPolynomial (pseudoDivMod f g).2).natDegree <
+        (HexPolyTheory.toPolynomial g).natDegree := by
   have hr := pseudoDivMod_remainder_lt f g hg
   have hgpos : 0 < g.size := by
     exact Nat.pos_of_ne_zero fun hg0 =>
@@ -89,10 +89,10 @@ theorem remainder_degree [CommRing R] [DecidableEq R]
   by_cases hr0 : (pseudoDivMod f g).2.size = 0
   · left
     rw [(size_eq_zero_iff (pseudoDivMod f g).2).mp hr0,
-      HexPolyMathlib.toPolynomial_zero]
+      HexPolyTheory.toPolynomial_zero]
   · right
-    rw [HexPolyMathlib.natDegree_toPolynomial,
-      HexPolyMathlib.natDegree_toPolynomial,
+    rw [HexPolyTheory.natDegree_toPolynomial,
+      HexPolyTheory.natDegree_toPolynomial,
       Hex.DensePoly.natDegree_eq_size_sub_one,
       Hex.DensePoly.natDegree_eq_size_sub_one]
     omega
@@ -102,9 +102,9 @@ resultant from `(f,g)` to `(g,r)`, including the Sylvester swap sign. -/
 theorem resultant_step [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
     let r := (pseudoDivMod f g).2
-    let F := HexPolyMathlib.toPolynomial f
-    let G := HexPolyMathlib.toPolynomial g
-    let P := HexPolyMathlib.toPolynomial r
+    let F := HexPolyTheory.toPolynomial f
+    let G := HexPolyTheory.toPolynomial g
+    let P := HexPolyTheory.toPolynomial r
     let n := F.natDegree
     let m := G.natDegree
     (g.leadingCoeff ^ (f.size - g.size + 1)) ^ m *
@@ -112,10 +112,10 @@ theorem resultant_step [CommRing R] [DecidableEq R]
       (-1 : R) ^ (n * m) * Polynomial.resultant G P m n := by
   let q := (pseudoDivMod f g).1
   let r := (pseudoDivMod f g).2
-  let F := HexPolyMathlib.toPolynomial f
-  let G := HexPolyMathlib.toPolynomial g
-  let P := HexPolyMathlib.toPolynomial r
-  let Q := HexPolyMathlib.toPolynomial q
+  let F := HexPolyTheory.toPolynomial f
+  let G := HexPolyTheory.toPolynomial g
+  let P := HexPolyTheory.toPolynomial r
+  let Q := HexPolyTheory.toPolynomial q
   let n := F.natDegree
   let m := G.natDegree
   let b := g.leadingCoeff ^ (f.size - g.size + 1)
@@ -145,9 +145,9 @@ formal-degree promotion explicitly. -/
 theorem resultant_step_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
     let r := (pseudoDivMod f g).2
-    let F := HexPolyMathlib.toPolynomial f
-    let G := HexPolyMathlib.toPolynomial g
-    let P := HexPolyMathlib.toPolynomial r
+    let F := HexPolyTheory.toPolynomial f
+    let G := HexPolyTheory.toPolynomial g
+    let P := HexPolyTheory.toPolynomial r
     let n := F.natDegree
     let m := G.natDegree
     let k := P.natDegree
@@ -156,9 +156,9 @@ theorem resultant_step_degree [CommRing R] [DecidableEq R]
       (-1 : R) ^ (n * m) *
         (g.leadingCoeff ^ (n - k) * Polynomial.resultant G P m k) := by
   let r := (pseudoDivMod f g).2
-  let F := HexPolyMathlib.toPolynomial f
-  let G := HexPolyMathlib.toPolynomial g
-  let P := HexPolyMathlib.toPolynomial r
+  let F := HexPolyTheory.toPolynomial f
+  let G := HexPolyTheory.toPolynomial g
+  let P := HexPolyTheory.toPolynomial r
   let n := F.natDegree
   let m := G.natDegree
   let k := P.natDegree
@@ -169,10 +169,10 @@ theorem resultant_step_degree [CommRing R] [DecidableEq R]
       hg ((size_eq_zero_iff g).mp hg0)
   have hfpos : 0 < f.size := Nat.lt_of_lt_of_le hgpos hgf
   have hk : k ≤ n := by
-    change (HexPolyMathlib.toPolynomial r).natDegree ≤
-      (HexPolyMathlib.toPolynomial f).natDegree
-    rw [HexPolyMathlib.natDegree_toPolynomial,
-      HexPolyMathlib.natDegree_toPolynomial]
+    change (HexPolyTheory.toPolynomial r).natDegree ≤
+      (HexPolyTheory.toPolynomial f).natDegree
+    rw [HexPolyTheory.natDegree_toPolynomial,
+      HexPolyTheory.natDegree_toPolynomial]
     by_cases hr0 : r.size = 0
     · unfold Hex.DensePoly.natDegree
       rw [(degree?_eq_none_iff r).2 hr0, Option.getD_none,
@@ -189,7 +189,7 @@ theorem resultant_step_degree [CommRing R] [DecidableEq R]
     rw [Nat.add_sub_of_le hk] at h
     have hlc : G.coeff m = g.leadingCoeff := by
       simpa only [G, m, Polynomial.leadingCoeff] using
-        HexPolyMathlib.leadingCoeff_toPolynomial g
+        HexPolyTheory.leadingCoeff_toPolynomial g
     simpa only [m, k, hlc] using h
   calc
     (g.leadingCoeff ^ (f.size - g.size + 1)) ^ m *

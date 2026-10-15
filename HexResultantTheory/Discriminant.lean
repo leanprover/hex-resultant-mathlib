@@ -6,7 +6,7 @@ Authors: Kim Morrison
 
 module
 
-public import HexResultantMathlib.Sylvester
+public import HexResultantTheory.Sylvester
 public import Mathlib.FieldTheory.Separable
 
 public section
@@ -24,14 +24,14 @@ variable {R : Type u}
 correspondence. -/
 theorem toPolynomial_disc [CommRing R] [DecidableEq R]
     [Div R] [Hex.ExactDivLaws R] (f : DensePoly R) :
-    disc f = Polynomial.discr (HexPolyMathlib.toPolynomial f) := by
-  let F := HexPolyMathlib.toPolynomial f
+    disc f = Polynomial.discr (HexPolyTheory.toPolynomial f) := by
+  let F := HexPolyTheory.toPolynomial f
   by_cases hsmall : f.size ≤ 1
   · unfold disc
     rw [ite_eq_left hsmall]
     have hdeg : F.natDegree = 0 := by
       rw [show F.natDegree = f.natDegree by
-        simpa only [F] using HexPolyMathlib.natDegree_toPolynomial f]
+        simpa only [F] using HexPolyTheory.natDegree_toPolynomial f]
       by_cases hf : f = 0
       · subst f
         simp
@@ -46,7 +46,7 @@ theorem toPolynomial_disc [CommRing R] [DecidableEq R]
     exact (Polynomial.discr_C _).symm
   · let n := f.size - 1
     let d := f.derivative
-    let D := HexPolyMathlib.toPolynomial d
+    let D := HexPolyTheory.toPolynomial d
     let k := d.natDegree
     let gap := n - 1 - k
     have hfpos : 0 < f.size := by omega
@@ -55,12 +55,12 @@ theorem toPolynomial_disc [CommRing R] [DecidableEq R]
       omega
     have hFn : F.natDegree = n := by
       rw [show F.natDegree = f.natDegree by
-        simpa only [F] using HexPolyMathlib.natDegree_toPolynomial f]
+        simpa only [F] using HexPolyTheory.natDegree_toPolynomial f]
       rw [natDegree_eq_size_sub_one]
     have hD : D = F.derivative := by
-      simpa only [D, d, F] using HexPolyMathlib.toPolynomial_derivative f
+      simpa only [D, d, F] using HexPolyTheory.toPolynomial_derivative f
     have hDk : D.natDegree = k := by
-      simpa only [D, k] using HexPolyMathlib.natDegree_toPolynomial d
+      simpa only [D, k] using HexPolyTheory.natDegree_toPolynomial d
     have hk : k ≤ n - 1 := by
       rw [← hDk, hD, ← hFn]
       exact Polynomial.natDegree_derivative_le F
@@ -68,7 +68,7 @@ theorem toPolynomial_disc [CommRing R] [DecidableEq R]
       dsimp only [gap]
       omega
     have hlc : F.leadingCoeff = f.leadingCoeff := by
-      simpa only [F] using HexPolyMathlib.leadingCoeff_toPolynomial f
+      simpa only [F] using HexPolyTheory.leadingCoeff_toPolynomial f
     have hactual :
         resultant f d = Polynomial.resultant F D n k := by
       rw [toPolynomial_resultant]
@@ -316,15 +316,15 @@ theorem disc_mul [CommRing R] [IsDomain R] [IsAddTorsionFree R]
     (f g : DensePoly R) (hf : 0 < f.natDegree)
     (hg : 0 < g.natDegree) :
     disc (f * g) = disc f * disc g * resultant f g ^ 2 := by
-  have hf' : 0 < (HexPolyMathlib.toPolynomial f).natDegree := by
-    rw [HexPolyMathlib.natDegree_toPolynomial]
+  have hf' : 0 < (HexPolyTheory.toPolynomial f).natDegree := by
+    rw [HexPolyTheory.natDegree_toPolynomial]
     exact hf
-  have hg' : 0 < (HexPolyMathlib.toPolynomial g).natDegree := by
-    rw [HexPolyMathlib.natDegree_toPolynomial]
+  have hg' : 0 < (HexPolyTheory.toPolynomial g).natDegree := by
+    rw [HexPolyTheory.natDegree_toPolynomial]
     exact hg
   rw [toPolynomial_disc, toPolynomial_disc, toPolynomial_disc,
-    HexPolyMathlib.toPolynomial_mul, toPolynomial_resultant]
-  simpa only [HexPolyMathlib.natDegree_toPolynomial] using
+    HexPolyTheory.toPolynomial_mul, toPolynomial_resultant]
+  simpa only [HexPolyTheory.natDegree_toPolynomial] using
     discr_mul _ _ hf' hg'
 
 /-- A positive-degree polynomial over a characteristic-zero field has
@@ -332,10 +332,10 @@ nonzero executable discriminant exactly when it is separable. -/
 theorem disc_ne_zero_iff_separable [Field R] [IsAddTorsionFree R]
     [DecidableEq R] [Hex.ExactDivLaws R]
     (f : DensePoly R) (hf : 0 < f.natDegree) :
-    disc f ≠ 0 ↔ (HexPolyMathlib.toPolynomial f).Separable := by
-  let F := HexPolyMathlib.toPolynomial f
+    disc f ≠ 0 ↔ (HexPolyTheory.toPolynomial f).Separable := by
+  let F := HexPolyTheory.toPolynomial f
   have hFn : F.natDegree = f.natDegree := by
-    simpa only [F] using HexPolyMathlib.natDegree_toPolynomial f
+    simpa only [F] using HexPolyTheory.natDegree_toPolynomial f
   have hFpos : 0 < F.natDegree := by rw [hFn]; exact hf
   have hF0 : F ≠ 0 := by
     intro h

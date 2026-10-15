@@ -6,8 +6,8 @@ Authors: Kim Morrison
 
 module
 
-public import HexResultantMathlib.Chain
-public import HexResultantMathlib.Sylvester
+public import HexResultantTheory.Chain
+public import HexResultantTheory.Sylvester
 
 public section
 
@@ -64,27 +64,27 @@ private theorem eval_coeffMinorAt_zero [CommRing R] [DecidableEq R]
   let _ : CommRing (DensePoly R) := denseCommRing
   let ε : DensePoly R →+* R :=
     (Polynomial.evalRingHom a).comp
-      (HexPolyMathlib.equiv (R := R)).toRingHom
+      (HexPolyTheory.equiv (R := R)).toRingHom
   have hε (p : DensePoly R) : ε p = eval p a := by
-    change (HexPolyMathlib.toPolynomial p).eval a = eval p a
+    change (HexPolyTheory.toPolynomial p).eval a = eval p a
     exact (eval_toPolynomial p a).symm
   have hfMap :
-      (HexPolyMathlib.toPolynomial f).map ε = specialize f a := by
+      (HexPolyTheory.toPolynomial f).map ε = specialize f a := by
     ext i
-    rw [Polynomial.coeff_map, HexPolyMathlib.coeff_toPolynomial,
+    rw [Polynomial.coeff_map, HexPolyTheory.coeff_toPolynomial,
       coeff_specialize, hε]
   have hgMap :
-      (HexPolyMathlib.toPolynomial g).map ε = specialize g a := by
+      (HexPolyTheory.toPolynomial g).map ε = specialize g a := by
     ext i
-    rw [Polynomial.coeff_map, HexPolyMathlib.coeff_toPolynomial,
+    rw [Polynomial.coeff_map, HexPolyTheory.coeff_toPolynomial,
       coeff_specialize, hε]
   rw [← hε]
   have hminor :=
     Subresultant.coeffMinorAt_zero_eq_resultant df dg f g hf hg
   calc
     ε (Subresultant.coeffMinorAt df dg 0 0 f g) =
-        ε (Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-          (HexPolyMathlib.toPolynomial g) df dg) := congrArg ε hminor
+        ε (Polynomial.resultant (HexPolyTheory.toPolynomial f)
+          (HexPolyTheory.toPolynomial g) df dg) := congrArg ε hminor
     _ = Polynomial.resultant (specialize f a) (specialize g a) df dg := by
       rw [← Polynomial.resultant_map_map, hfMap, hgMap]
 
@@ -117,7 +117,7 @@ theorem eval_resultant [CommRing R] [DecidableEq R]
       rw [hz]
       simp only [↓reduceIte]
       rw [ite_eq_left hgsmall, specialize_zero, hzdeg, hgdeg,
-        eval_toPolynomial, HexPolyMathlib.toPolynomial_one]
+        eval_toPolynomial, HexPolyTheory.toPolynomial_one]
       simp [Polynomial.resultant]
     · have hgdeg : 0 < g.natDegree := by
         have hgpos : 0 < g.size := by omega
@@ -127,7 +127,7 @@ theorem eval_resultant [CommRing R] [DecidableEq R]
       rw [hz]
       simp only [↓reduceIte]
       rw [ite_eq_right hgsmall, specialize_zero, hzdeg,
-        eval_toPolynomial, HexPolyMathlib.toPolynomial_zero,
+        eval_toPolynomial, HexPolyTheory.toPolynomial_zero,
         Polynomial.eval_zero, Polynomial.resultant_zero_left]
       simp [hgdeg.ne']
   · by_cases hg : g = 0
@@ -149,7 +149,7 @@ theorem eval_resultant [CommRing R] [DecidableEq R]
         rw [hfz, hz]
         simp only [Bool.false_eq_true, ↓reduceIte]
         rw [ite_eq_left hfsmall, specialize_zero, hzdeg, hfdeg,
-          eval_toPolynomial, HexPolyMathlib.toPolynomial_one]
+          eval_toPolynomial, HexPolyTheory.toPolynomial_one]
         simp [Polynomial.resultant]
       · have hfdeg : 0 < f.natDegree := by
           rw [natDegree_eq_size_sub_one]
@@ -158,7 +158,7 @@ theorem eval_resultant [CommRing R] [DecidableEq R]
         rw [hfz, hz]
         simp only [Bool.false_eq_true, ↓reduceIte]
         rw [ite_eq_right hfsmall, specialize_zero, hzdeg,
-          eval_toPolynomial, HexPolyMathlib.toPolynomial_zero,
+          eval_toPolynomial, HexPolyTheory.toPolynomial_zero,
           Polynomial.eval_zero, Polynomial.resultant_zero_right]
         simp [hfdeg.ne']
     · have hfpos : 0 < f.size := by
@@ -211,7 +211,7 @@ private theorem natDegree_specialize [CommRing R] [DecidableEq R]
     have hfzero : f = 0 := (size_eq_zero_iff f).mp (by omega)
     subst f
     rw [leadingCoeff_zero, eval_toPolynomial,
-      HexPolyMathlib.toPolynomial_zero, Polynomial.eval_zero] at hf
+      HexPolyTheory.toPolynomial_zero, Polynomial.eval_zero] at hf
     exact hf rfl
   rw [natDegree_eq_size_sub_one]
   apply le_antisymm

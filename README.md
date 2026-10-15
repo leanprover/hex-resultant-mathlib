@@ -1,35 +1,35 @@
-# hex-resultant-mathlib
+# hex-resultant-theory
 
 Part of [`hex`](https://github.com/kim-em/hex-dev), a computer algebra
 library for Lean 4. The aim is fast executable code, fully verified, built
 with spec-driven development.
 
-Mathlib companion for
+Theory companion for
 [`hex-resultant`](https://github.com/leanprover/hex-resultant). It proves
 that the executable subresultant algorithm computes `Polynomial.resultant`,
 together with the chain-level and specialization facts consumed by the
 number-field libraries. It depends on `hex-resultant`,
-[`hex-poly-mathlib`](https://github.com/leanprover/hex-poly-mathlib), and
+[`hex-poly-theory`](https://github.com/leanprover/hex-poly-theory), and
 Mathlib.
 
 # Quickstart
 
 ```toml
 [[require]]
-name = "hex-resultant-mathlib"
-git = "https://github.com/leanprover/hex-resultant-mathlib.git"
+name = "hex-resultant-theory"
+git = "https://github.com/leanprover/hex-resultant-theory.git"
 rev = "main"
 ```
 
 ```lean
-import HexResultantMathlib
+import HexResultantTheory
 
 open Hex
 
 example (f g : DensePoly ℤ) :
     DensePoly.resultant f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := f.natDegree) (n := g.natDegree) :=
   DensePoly.toPolynomial_resultant f g
 ```
@@ -59,7 +59,7 @@ algorithm's own (`CommRing R`, `DecidableEq R`, `Div R`,
 `Hex.ExactDivLaws R`), so the correspondence applies to every instantiation
 the computational package supports. The computational library stays
 Mathlib-free; algebraic semantics live here. See the
-[SPEC](SPEC/hex-resultant-mathlib.md) for the full public theorem list and
+[SPEC](SPEC/hex-resultant-theory.md) for the full public theorem list and
 the proof architecture.
 
 # Contributing

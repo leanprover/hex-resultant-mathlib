@@ -6,7 +6,7 @@ Authors: Kim Morrison
 
 module
 
-public import HexResultantMathlib.Basic
+public import HexResultantTheory.Basic
 public import Mathlib.Data.Fin.Rev
 
 public section
@@ -133,14 +133,14 @@ private theorem coeffMatrixAt_zero_eq_sylvester [CommRing R] [DecidableEq R]
     (df dg : Nat) (f g : DensePoly R) (hf : f.size ≤ df + 1)
     (hg : g.size ≤ dg + 1) :
     _root_.Matrix.of (coeffMatrixAt df dg 0 0 f g) =
-      (Polynomial.sylvester (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g) df dg).submatrix
+      (Polynomial.sylvester (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g) df dg).submatrix
           Fin.revPerm Fin.revPerm := by
   rw [sylvester_eq_byVal]
   ext i j
   simp only [_root_.Matrix.of_apply, _root_.Matrix.submatrix_apply, Fin.revPerm_apply]
   unfold coeffMatrixAt sylvesterByVal
-  simp only [Nat.sub_zero, _root_.Matrix.of_apply, HexPolyMathlib.coeff_toPolynomial,
+  simp only [Nat.sub_zero, _root_.Matrix.of_apply, HexPolyTheory.coeff_toPolynomial,
     Int.ofNat_eq_natCast, Int.natCast_zero]
   by_cases hj : j.val < dg
   · rw [ite_eq_left hj]
@@ -217,8 +217,8 @@ theorem coeffMinorAt_zero_eq_resultant [CommRing R] [DecidableEq R]
     (df dg : Nat) (f g : DensePoly R)
     (hf : f.size ≤ df + 1) (hg : g.size ≤ dg + 1) :
     coeffMinorAt df dg 0 0 f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := df) (n := dg) := by
   unfold coeffMinorAt Polynomial.resultant
   rw [Hex.SubresultantMinor.det_eq_matrixDet]
@@ -230,8 +230,8 @@ determinant at the same formal degrees. -/
 theorem coeffMinor_zero_eq_resultant [CommRing R] [DecidableEq R]
     (f g : DensePoly R) :
     coeffMinor 0 0 f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := formalDegree f) (n := formalDegree g) := by
   have hf : f.size ≤ formalDegree f + 1 := by
     unfold formalDegree
@@ -249,8 +249,8 @@ correspondence, with the executable default formal degrees made explicit. -/
 theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
     [Div R] [Hex.ExactDivLaws R] (f g : DensePoly R) :
     resultant f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := f.natDegree) (n := g.natDegree) := by
   by_cases hf : f = 0
   · subst f
@@ -271,7 +271,7 @@ theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
       unfold resultant
       rw [hz]
       simp only [↓reduceIte]
-      rw [ite_eq_left hgsmall, HexPolyMathlib.toPolynomial_zero, hzdeg, hgdeg]
+      rw [ite_eq_left hgsmall, HexPolyTheory.toPolynomial_zero, hzdeg, hgdeg]
       simp [Polynomial.resultant]
     · have hgdeg : 0 < g.natDegree := by
         have hgpos : 0 < g.size := by omega
@@ -280,7 +280,7 @@ theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
       unfold resultant
       rw [hz]
       simp only [↓reduceIte]
-      rw [ite_eq_right hgsmall, HexPolyMathlib.toPolynomial_zero, hzdeg,
+      rw [ite_eq_right hgsmall, HexPolyTheory.toPolynomial_zero, hzdeg,
         Polynomial.resultant_zero_left]
       simp [hgdeg.ne']
   · by_cases hg : g = 0
@@ -300,7 +300,7 @@ theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
         unfold resultant
         rw [hfz, hz]
         simp only [Bool.false_eq_true, ↓reduceIte]
-        rw [ite_eq_left hfsmall, HexPolyMathlib.toPolynomial_zero, hzdeg, hfdeg]
+        rw [ite_eq_left hfsmall, HexPolyTheory.toPolynomial_zero, hzdeg, hfdeg]
         simp [Polynomial.resultant]
       · have hfdeg : 0 < f.natDegree := by
           rw [natDegree_eq_size_sub_one]
@@ -308,7 +308,7 @@ theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
         unfold resultant
         rw [hfz, hz]
         simp only [Bool.false_eq_true, ↓reduceIte]
-        rw [ite_eq_right hfsmall, HexPolyMathlib.toPolynomial_zero, hzdeg,
+        rw [ite_eq_right hfsmall, HexPolyTheory.toPolynomial_zero, hzdeg,
           Polynomial.resultant_zero_right]
         simp [hfdeg.ne']
     · have hfpos : 0 < f.size := by
@@ -337,7 +337,7 @@ theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
         rw [negOnePow_eq_sign,
           Hex.SubresultantMinor.sign_eq_pow]
         exact (Polynomial.resultant_comm
-          (HexPolyMathlib.toPolynomial f) (HexPolyMathlib.toPolynomial g)
+          (HexPolyTheory.toPolynomial f) (HexPolyTheory.toPolynomial g)
           (Subresultant.formalDegree f) (Subresultant.formalDegree g)).symm
       · rw [ite_eq_right hfg]
         rw [resultantOrdered_eq_coeffMinor f g hf hg (by omega)]

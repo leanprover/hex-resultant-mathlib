@@ -6,7 +6,7 @@ Authors: Kim Morrison
 
 module
 
-public import HexResultantMathlib.Roots
+public import HexResultantTheory.Roots
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 public section
@@ -22,10 +22,10 @@ theorem resultant_eq_zero_iff_common_root
     (f g : DensePoly Int) (hf : f ≠ 0) :
     resultant f g = 0 ↔
       ∃ z : ℂ,
-        Polynomial.aeval z (HexPolyMathlib.toPolynomial f) = 0 ∧
-        Polynomial.aeval z (HexPolyMathlib.toPolynomial g) = 0 := by
-  let F := HexPolyMathlib.toPolynomial f
-  let G := HexPolyMathlib.toPolynomial g
+        Polynomial.aeval z (HexPolyTheory.toPolynomial f) = 0 ∧
+        Polynomial.aeval z (HexPolyTheory.toPolynomial g) = 0 := by
+  let F := HexPolyTheory.toPolynomial f
+  let G := HexPolyTheory.toPolynomial g
   let φ : Int →+* ℂ := Int.castRingHom ℂ
   let FC := F.map φ
   let GC := G.map φ
@@ -33,14 +33,14 @@ theorem resultant_eq_zero_iff_common_root
   have hF : F ≠ 0 := by
     intro hzero
     apply hf
-    apply (HexPolyMathlib.equiv (R := Int)).injective
-    simpa only [HexPolyMathlib.equiv_apply, HexPolyMathlib.toPolynomial_zero]
+    apply (HexPolyTheory.equiv (R := Int)).injective
+    simpa only [HexPolyTheory.equiv_apply, HexPolyTheory.toPolynomial_zero]
       using hzero
   have hFC : FC ≠ 0 := (Polynomial.map_ne_zero_iff hφ).2 hF
   have hdf : f.natDegree = F.natDegree := by
-    simpa only [F] using (HexPolyMathlib.natDegree_toPolynomial f).symm
+    simpa only [F] using (HexPolyTheory.natDegree_toPolynomial f).symm
   have hdg : g.natDegree = G.natDegree := by
-    simpa only [G] using (HexPolyMathlib.natDegree_toPolynomial g).symm
+    simpa only [G] using (HexPolyTheory.natDegree_toPolynomial g).symm
   have hFCdeg : FC.natDegree = F.natDegree :=
     Polynomial.natDegree_map_eq_of_injective hφ F
   have hGCdeg : GC.natDegree = G.natDegree :=

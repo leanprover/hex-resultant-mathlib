@@ -8,7 +8,7 @@ module
 
 public import Mathlib.RingTheory.Polynomial.Resultant.Basic
 public import HexResultant
-public import HexPolyMathlib
+public import HexPolyTheory
 
 public section
 
@@ -60,10 +60,10 @@ private theorem evalCoeffList_eq_sum_fin [CommSemiring R]
 conversion to Mathlib's polynomial representation. -/
 theorem eval_toPolynomial [CommSemiring R] [DecidableEq R]
     (p : DensePoly R) (x : R) :
-    eval p x = (HexPolyMathlib.toPolynomial p).eval x := by
+    eval p x = (HexPolyTheory.toPolynomial p).eval x := by
   unfold eval
   rw [evalCoeffList_eq_sum_fin]
-  rw [Polynomial.eval, HexPolyMathlib.eval₂_toPolynomial]
+  rw [Polynomial.eval, HexPolyTheory.eval₂_toPolynomial]
   rw [Finset.sum_fin_eq_sum_range]
   apply Finset.sum_congr rfl
   intro i hi

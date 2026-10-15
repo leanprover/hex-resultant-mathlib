@@ -1,6 +1,6 @@
-# hex-resultant-mathlib (depends on hex-resultant + hex-poly-mathlib + Mathlib)
+# hex-resultant-theory (depends on hex-resultant + hex-poly-theory + Mathlib)
 
-Mathlib companion for `hex-resultant`. It proves both the chain-level facts used
+Theory companion for `hex-resultant`. It proves both the chain-level facts used
 for early number-field soundness and the full agreement of the executable
 subresultant algorithm with `Polynomial.resultant`.
 
@@ -60,7 +60,7 @@ namespace Hex.DensePoly
 /-- Horner evaluation agrees with evaluation after conversion to Mathlib. -/
 theorem eval_toPolynomial [CommSemiring R] [DecidableEq R]
     (p : DensePoly R) (x : R) :
-    eval p x = (HexPolyMathlib.toPolynomial p).eval x
+    eval p x = (HexPolyTheory.toPolynomial p).eval x
 
 /-- Specialize the coefficient variable of a dense bivariate polynomial while
     retaining the outer polynomial variable. -/
@@ -91,15 +91,15 @@ theorem coeffMinorAt_zero_eq_resultant [CommRing R] [DecidableEq R]
     (df dg : Nat) (f g : DensePoly R)
     (hf : f.size ≤ df + 1) (hg : g.size ≤ dg + 1) :
     coeffMinorAt df dg 0 0 f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g) (m := df) (n := dg)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g) (m := df) (n := dg)
 
 /-- The default-formal-degree zeroth minor is the corresponding resultant. -/
 theorem coeffMinor_zero_eq_resultant [CommRing R] [DecidableEq R]
     (f g : DensePoly R) :
     coeffMinor 0 0 f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := formalDegree f) (n := formalDegree g)
 
 end Subresultant
@@ -113,34 +113,34 @@ theorem reconstruct [CommRing R] [DecidableEq R]
     let q := (pseudoDivMod f g).1
     let r := (pseudoDivMod f g).2
     Polynomial.C (g.leadingCoeff ^ (f.size - g.size + 1)) *
-        HexPolyMathlib.toPolynomial f =
-      HexPolyMathlib.toPolynomial q * HexPolyMathlib.toPolynomial g +
-        HexPolyMathlib.toPolynomial r
+        HexPolyTheory.toPolynomial f =
+      HexPolyTheory.toPolynomial q * HexPolyTheory.toPolynomial g +
+        HexPolyTheory.toPolynomial r
 
 /-- The pseudo-quotient fits the formal-degree gap used by the resultant row
     operation. -/
 theorem quotient_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
-    (HexPolyMathlib.toPolynomial (pseudoDivMod f g).1).natDegree +
-        (HexPolyMathlib.toPolynomial g).natDegree ≤
-      (HexPolyMathlib.toPolynomial f).natDegree
+    (HexPolyTheory.toPolynomial (pseudoDivMod f g).1).natDegree +
+        (HexPolyTheory.toPolynomial g).natDegree ≤
+      (HexPolyTheory.toPolynomial f).natDegree
 
 /-- The pseudo-remainder is zero or has strictly smaller Mathlib degree than
     the nonzero divisor. -/
 theorem remainder_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) :
-    HexPolyMathlib.toPolynomial (pseudoDivMod f g).2 = 0 ∨
-      (HexPolyMathlib.toPolynomial (pseudoDivMod f g).2).natDegree <
-        (HexPolyMathlib.toPolynomial g).natDegree
+    HexPolyTheory.toPolynomial (pseudoDivMod f g).2 = 0 ∨
+      (HexPolyTheory.toPolynomial (pseudoDivMod f g).2).natDegree <
+        (HexPolyTheory.toPolynomial g).natDegree
 
 /-- Transport one pseudo-division step through the formal-degree Sylvester
     resultant, including its scalar power and swap sign. -/
 theorem resultant_step [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
     let r := (pseudoDivMod f g).2
-    let F := HexPolyMathlib.toPolynomial f
-    let G := HexPolyMathlib.toPolynomial g
-    let P := HexPolyMathlib.toPolynomial r
+    let F := HexPolyTheory.toPolynomial f
+    let G := HexPolyTheory.toPolynomial g
+    let P := HexPolyTheory.toPolynomial r
     let n := F.natDegree
     let m := G.natDegree
     (g.leadingCoeff ^ (f.size - g.size + 1)) ^ m *
@@ -152,9 +152,9 @@ theorem resultant_step [CommRing R] [DecidableEq R]
 theorem resultant_step_degree [CommRing R] [DecidableEq R]
     (f g : DensePoly R) (hg : g ≠ 0) (hgf : g.size ≤ f.size) :
     let r := (pseudoDivMod f g).2
-    let F := HexPolyMathlib.toPolynomial f
-    let G := HexPolyMathlib.toPolynomial g
-    let P := HexPolyMathlib.toPolynomial r
+    let F := HexPolyTheory.toPolynomial f
+    let G := HexPolyTheory.toPolynomial g
+    let P := HexPolyTheory.toPolynomial r
     let n := F.natDegree
     let m := G.natDegree
     let k := P.natDegree
@@ -170,8 +170,8 @@ end PseudoDivMod
 theorem toPolynomial_resultant [CommRing R] [DecidableEq R]
     [Div R] [Hex.ExactDivLaws R] (f g : DensePoly R) :
     resultant f g =
-      Polynomial.resultant (HexPolyMathlib.toPolynomial f)
-        (HexPolyMathlib.toPolynomial g)
+      Polynomial.resultant (HexPolyTheory.toPolynomial f)
+        (HexPolyTheory.toPolynomial g)
         (m := f.natDegree) (n := g.natDegree)
 
 /-- Vanishing criterion over an algebraically closed extension. -/
@@ -179,8 +179,8 @@ theorem resultant_eq_zero_iff_common_root
     (f g : DensePoly Int) (hf : f ≠ 0) :
     resultant f g = 0 ↔
       ∃ z : ℂ,
-        Polynomial.aeval z (HexPolyMathlib.toPolynomial f) = 0 ∧
-        Polynomial.aeval z (HexPolyMathlib.toPolynomial g) = 0
+        Polynomial.aeval z (HexPolyTheory.toPolynomial f) = 0 ∧
+        Polynomial.aeval z (HexPolyTheory.toPolynomial g) = 0
 
 /-- Specialize the coefficient variable after eliminating the polynomial
     variable. -/
@@ -220,7 +220,7 @@ theorem resultant_eq_leadingCoeff_mul_prod_roots
 
 theorem toPolynomial_disc [CommRing R] [DecidableEq R]
     [Div R] [Hex.ExactDivLaws R] (f : DensePoly R) :
-    disc f = Polynomial.discr (HexPolyMathlib.toPolynomial f)
+    disc f = Polynomial.discr (HexPolyTheory.toPolynomial f)
 
 /-- Positive-degree characteristic-zero product identity. -/
 theorem disc_mul [CommRing R] [IsDomain R] [IsAddTorsionFree R]
@@ -233,7 +233,7 @@ theorem disc_mul [CommRing R] [IsDomain R] [IsAddTorsionFree R]
 theorem disc_ne_zero_iff_separable [Field R] [IsAddTorsionFree R]
     [DecidableEq R] [Hex.ExactDivLaws R]
     (f : DensePoly R) (hf : 0 < f.natDegree) :
-    disc f ≠ 0 ↔ (HexPolyMathlib.toPolynomial f).Separable
+    disc f ≠ 0 ↔ (HexPolyTheory.toPolynomial f).Separable
 
 end Hex.DensePoly
 ```
@@ -246,7 +246,7 @@ Consequently the bivariate specialization theorems are **not** obtained by
 instantiating `toPolynomial_resultant` with coefficient type `DensePoly R`.
 Instead, the proof gives `DensePoly R` a proof-local Mathlib ring structure,
 identifies coefficient evaluation with a ring hom through
-`HexPolyMathlib.toPolynomial`, and maps the explicit-degree zeroth coefficient
+`HexPolyTheory.toPolynomial`, and maps the explicit-degree zeroth coefficient
 minor through that hom. `coeffMinorAt_zero_eq_resultant` then identifies the
 mapped determinant with the resultant of the specialized inputs. The local
 instance never escapes the proof, and the executable correspondence theorem is
@@ -293,7 +293,7 @@ multiplicity representation.
 
 ## Downstream contracts
 
-- `hex-number-field-mathlib` lazy arithmetic `_sound` theorems use
+- `hex-number-field-theory` lazy arithmetic `_sound` theorems use
   specialization-vanishing.
 - Exactification and root completeness use common-root correspondence plus the
   factorization and isolation companions.
@@ -308,7 +308,7 @@ multiplicity representation.
 ## File organisation
 
 ```text
-HexResultantMathlib/
+HexResultantTheory/
   Basic.lean           : public theorem statements
   PseudoDivMod.lean    : reconstruction and one-step resultant transport
   Chain.lean           : common-root consequences of full agreement
